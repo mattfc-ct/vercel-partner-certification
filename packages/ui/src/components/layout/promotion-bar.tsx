@@ -1,5 +1,3 @@
-"use client";
-
 import { getActivePromotion } from "@repo/api/promotions";
 
 export async function PromotionBar() {
