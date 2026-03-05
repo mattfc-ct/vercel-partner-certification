@@ -7,6 +7,7 @@ import {
   NavigationMenuList,
 } from "@repo/ui/components/navigation-menu";
 import { TriangleIcon } from "@repo/ui/icons/triangle";
+import Link from "next/link";
 import { Suspense } from "react";
 
 export function Header({
@@ -24,10 +25,14 @@ export function Header({
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem>
-              <NavigationMenuLink href="/">Home</NavigationMenuLink>
+              <NavigationMenuLink asChild>
+                <Link href="/">Home</Link>
+              </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <NavigationMenuLink href="/search">Search</NavigationMenuLink>
+              <NavigationMenuLink asChild>
+                <Link href="/search">Search</Link>
+              </NavigationMenuLink>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
