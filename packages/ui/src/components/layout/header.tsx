@@ -8,6 +8,7 @@ import {
 import { TriangleIcon } from "@repo/ui/icons/triangle";
 import Link from "next/link";
 import { Suspense } from "react";
+import { Spinner } from "../spinner";
 
 export function Header() {
   return (
@@ -32,7 +33,13 @@ export function Header() {
           </NavigationMenuList>
         </NavigationMenu>
       </div>
-      <Suspense>
+      <Suspense
+        fallback={
+          <div className="flex justify-center bg-black p-3 text-center text-sm text-white">
+            <Spinner className="size-5" />
+          </div>
+        }
+      >
         <PromotionBar />
       </Suspense>
     </header>

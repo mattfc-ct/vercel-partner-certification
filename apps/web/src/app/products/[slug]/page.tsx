@@ -1,6 +1,7 @@
 import { getProductBySlug } from "@repo/api/products";
 import { getStock } from "@repo/api/stock";
 import { ProductDetails } from "@repo/ui/components/product/details";
+import { Spinner } from "@repo/ui/components/spinner";
 import { Suspense } from "react";
 
 async function ProductPageContent({
@@ -24,7 +25,13 @@ export default async function ProductPage({
   params: Promise<{ slug: string }>;
 }) {
   return (
-    <Suspense>
+    <Suspense
+      fallback={
+        <div className="flex min-h-[70vh] items-center justify-center">
+          <Spinner className="size-16" />
+        </div>
+      }
+    >
       <ProductPageContent params={params} />
     </Suspense>
   );
