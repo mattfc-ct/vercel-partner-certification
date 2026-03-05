@@ -25,3 +25,8 @@ export async function getProducts({
   );
   return products;
 }
+
+export async function getProductBySlug(slug: string): Promise<Product> {
+  const product = await getData<Product>(`/api/products/${slug}`);
+  return product;
+}
