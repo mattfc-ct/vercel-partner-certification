@@ -21,7 +21,8 @@
     "baseUrl": ".",
     "paths": {
       "@repo/ui/*": ["./src/*"],
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@repo/api/*": ["../../packages/api/src/*"]
     }
   },
   "include": ["src"],

@@ -1,13 +1,19 @@
+import type { Promotion } from "@repo/api/promotions";
+import { PromotionBar } from "@repo/ui/components/layout/promotion-bar";
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
 } from "@repo/ui/components/navigation-menu";
-
 import { TriangleIcon } from "@repo/ui/icons/triangle";
+import { Suspense } from "react";
 
-export function Header() {
+export function Header({
+  getActivePromotionPromise,
+}: {
+  getActivePromotionPromise: Promise<Promotion | null>;
+}) {
   return (
     <header className="border-b">
       <div className="flex items-center gap-4 p-4">
@@ -26,10 +32,9 @@ export function Header() {
           </NavigationMenuList>
         </NavigationMenu>
       </div>
-      <div className="bg-black p-3 text-center text-sm text-white">
-        Bundle & Save &mdash; Buy any hoodie + hat combo and save 10%
-        automatically. Code <span className="font-bold">BUNDLE10</span>
-      </div>
+      <Suspense>
+        <PromotionBar getActivePromotionPromise={getActivePromotionPromise} />
+      </Suspense>
     </header>
   );
 }
