@@ -23,7 +23,7 @@ export default async function RootLayout({
     <html lang="en">
       <body>
         <Header getActivePromotionPromise={getActivePromotionPromise} />
-        <main className="container mx-auto min-h-[calc(100vh-158px)] p-8">
+        <main className="container mx-auto min-h-[calc(100vh-158px)] px-8 py-16">
           {children}
         </main>
         <Footer />
