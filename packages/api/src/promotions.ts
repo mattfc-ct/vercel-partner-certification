@@ -18,5 +18,13 @@ export async function getActivePromotion(): Promise<Promotion | null> {
     return null;
   }
 
+  const validFrom = new Date(promotion.validFrom);
+  const validTo = new Date(promotion.validTo);
+  const now = new Date();
+
+  if (now < validFrom || now > validTo) {
+    return null;
+  }
+
   return promotion;
 }
