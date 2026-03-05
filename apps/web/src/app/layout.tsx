@@ -1,4 +1,5 @@
 import "@repo/ui/styles/globals.css";
+import { Footer } from "@repo/ui/components/layout/footer";
 import { Header } from "@repo/ui/components/layout/header";
 import type { Metadata } from "next";
 
@@ -19,7 +20,10 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Header />
-        {children}
+        <main className="container mx-auto min-h-[calc(100vh-158px)] p-8">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );

@@ -9,7 +9,7 @@ import { TriangleIcon } from "@repo/ui/icons/triangle";
 
 export function Header() {
   return (
-    <header className="mb-4 border-b">
+    <header className="border-b">
       <div className="flex items-center gap-4 p-4">
         <span>
           <TriangleIcon height={32} width={32} />
@@ -26,11 +26,9 @@ export function Header() {
           </NavigationMenuList>
         </NavigationMenu>
       </div>
-      <div className="flex items-center justify-center bg-black p-3 text-sm text-white">
-        <span>
-          Bundle & Save &mdash; Buy any hoodie + hat combo and save 10%
-          automatically. Code <span className="font-bold">BUNDLE10</span>
-        </span>
+      <div className="bg-black p-3 text-center text-sm text-white">
+        Bundle & Save &mdash; Buy any hoodie + hat combo and save 10%
+        automatically. Code <span className="font-bold">BUNDLE10</span>
       </div>
     </header>
   );
