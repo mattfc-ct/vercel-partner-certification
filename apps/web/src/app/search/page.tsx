@@ -1,10 +1,15 @@
 import { Search } from "@repo/ui/components/search/search";
 import type { Metadata } from "next";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Search",
 };
 
 export default function SearchPage() {
-  return <Search />;
+  return (
+    <Suspense>
+      <Search />
+    </Suspense>
+  );
 }

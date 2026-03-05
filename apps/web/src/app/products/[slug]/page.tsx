@@ -3,7 +3,13 @@ import { getStock } from "@repo/api/stock";
 import { ProductDetails } from "@repo/ui/components/product/details";
 import { Suspense } from "react";
 
-async function ProductPageContent({ slug }: { slug: string }) {
+async function ProductPageContent({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+
   const [product, stock] = await Promise.all([
     getProductBySlug(slug),
     getStock(slug),
@@ -15,13 +21,11 @@ async function ProductPageContent({ slug }: { slug: string }) {
 export default async function ProductPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const { slug } = await params;
-
   return (
     <Suspense>
-      <ProductPageContent slug={slug} />
+      <ProductPageContent params={params} />
     </Suspense>
   );
 }
