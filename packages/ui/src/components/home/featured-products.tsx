@@ -1,12 +1,8 @@
-import type { Product } from "@repo/api/products";
+import { getProducts } from "@repo/api/products";
 import Image from "next/image";
 import Link from "next/link";
-import { Suspense, use } from "react";
-import { Button } from "./button";
-
-interface FeaturedProductsProps {
-  getFeaturedProductsPromise: Promise<Product[]>;
-}
+import { Suspense } from "react";
+import { Button } from "../button";
 
 function formatPrice(price: number, currency: string) {
   return new Intl.NumberFormat("en-US", { style: "currency", currency }).format(
@@ -14,17 +10,15 @@ function formatPrice(price: number, currency: string) {
   );
 }
 
-export function FeaturedProducts({
-  getFeaturedProductsPromise,
-}: FeaturedProductsProps) {
-  const featuredProducts = use(getFeaturedProductsPromise);
+async function FeaturedProductsContent() {
+  const featuredProducts = await getProducts({ featured: true });
 
   if (!featuredProducts.length) {
     return;
   }
 
   return (
-    <Suspense>
+    <>
       <div className="flex items-center justify-between">
         <h2 className="font-bold text-2xl">Featured Products</h2>
         <Button asChild variant="link">
@@ -52,6 +46,14 @@ export function FeaturedProducts({
           </li>
         ))}
       </ul>
+    </>
+  );
+}
+
+export function FeaturedProducts() {
+  return (
+    <Suspense>
+      <FeaturedProductsContent />
     </Suspense>
   );
 }

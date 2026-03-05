@@ -1,13 +1,10 @@
-import { getProducts } from "@repo/api/products";
 import { Button } from "@repo/ui/components/button";
-import { FeaturedProducts } from "@repo/ui/components/featured-products";
-import { Hero } from "@repo/ui/components/hero";
+import { FeaturedProducts } from "@repo/ui/components/home/featured-products";
+import { Hero } from "@repo/ui/components/home/hero";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function HomePage() {
-  const getFeaturedProductsPromise = getProducts({ featured: true });
-
   return (
     <div className="flex flex-col gap-24">
       <Hero
@@ -27,9 +24,7 @@ export default function HomePage() {
         }
         title="Wear the framework you ship with"
       />
-      <FeaturedProducts
-        getFeaturedProductsPromise={getFeaturedProductsPromise}
-      />
+      <FeaturedProducts />
     </div>
   );
 }

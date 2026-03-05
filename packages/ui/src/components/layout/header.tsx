@@ -1,4 +1,3 @@
-import type { Promotion } from "@repo/api/promotions";
 import { PromotionBar } from "@repo/ui/components/layout/promotion-bar";
 import {
   NavigationMenu,
@@ -10,11 +9,7 @@ import { TriangleIcon } from "@repo/ui/icons/triangle";
 import Link from "next/link";
 import { Suspense } from "react";
 
-export function Header({
-  getActivePromotionPromise,
-}: {
-  getActivePromotionPromise: Promise<Promotion | null>;
-}) {
+export function Header() {
   return (
     <header className="border-b">
       <div className="flex items-center gap-4 p-4">
@@ -38,7 +33,7 @@ export function Header({
         </NavigationMenu>
       </div>
       <Suspense>
-        <PromotionBar getActivePromotionPromise={getActivePromotionPromise} />
+        <PromotionBar />
       </Suspense>
     </header>
   );

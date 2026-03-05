@@ -1,14 +1,9 @@
 "use client";
 
-import type { Promotion } from "@repo/api/promotions";
-import { use } from "react";
+import { getActivePromotion } from "@repo/api/promotions";
 
-export function PromotionBar({
-  getActivePromotionPromise,
-}: {
-  getActivePromotionPromise: Promise<Promotion | null>;
-}) {
-  const promotion = use(getActivePromotionPromise);
+export async function PromotionBar() {
+  const promotion = await getActivePromotion();
 
   if (!promotion) {
     return;
