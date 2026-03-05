@@ -15,13 +15,15 @@ export interface Product {
 
 export async function getProducts({
   featured,
+  query,
   limit = 6,
 }: {
-  featured: boolean;
+  featured?: boolean;
+  query?: string | null;
   limit?: number;
 }): Promise<Product[]> {
   const products = await getData<Product[]>(
-    `/api/products?featured=${featured}&limit=${limit}`
+    `/api/products?${featured ? "featured=true&" : ""}limit=${limit}${query ? `&search=${query}` : ""}`
   );
   return products;
 }

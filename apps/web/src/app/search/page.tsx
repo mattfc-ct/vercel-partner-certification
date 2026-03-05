@@ -1,3 +1,4 @@
+import { Search } from "@repo/ui/components/search/search";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -5,5 +6,5 @@ export const metadata: Metadata = {
 };
 
 export default function SearchPage() {
-  return <h1 className="font-bold text-3xl underline">Search</h1>;
+  return <Search />;
 }
