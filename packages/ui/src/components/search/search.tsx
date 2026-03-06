@@ -1,5 +1,6 @@
 "use client";
 
+import type { Category } from "@repo/api/categories";
 import type { Product } from "@repo/api/products";
 import { useTranslations } from "next-intl";
 import { useQueryState } from "nuqs";
@@ -8,45 +9,59 @@ import { Button } from "../button";
 import { Input } from "../input";
 import { ProductGrid } from "../product/grid";
 import { ProductGridSkeleton } from "../product/skeleton";
+import { CategorySelector } from "./category-selector";
 
-export function Search() {
+export function Search({
+  getCategoriesPromise,
+}: {
+  getCategoriesPromise: Promise<Category[]>;
+}) {
   const [products, setProducts] = useState<Product[]>([]);
-  const [query, setQuery] = useQueryState("");
+  const [query, setQuery] = useQueryState("query");
+  const [category, setCategory] = useQueryState("category");
   const hasHit3Chars = useRef(false);
   const [loading, setLoading] = useState(false);
   const abortController = useRef<AbortController | null>(null);
   const t = useTranslations("SearchPage");
 
-  const performSearch = useCallback(async (query: string | null) => {
-    setLoading(true);
+  const performSearch = useCallback(
+    async (query: string | null, category: string | null) => {
+      setLoading(true);
 
-    abortController.current?.abort();
-    abortController.current = new AbortController();
+      abortController.current?.abort();
+      abortController.current = new AbortController();
 
-    try {
-      const response = await fetch(
-        `/api/search${query ? `?query=${query}` : ""}`,
-        {
-          signal: abortController.current.signal,
+      try {
+        const queryParams = new URLSearchParams();
+        if (query) {
+          queryParams.set("query", query);
         }
-      );
+        if (category) {
+          queryParams.set("category", category);
+        }
 
-      const data = (await response.json()) as Product[];
+        const response = await fetch(`/api/search?${queryParams.toString()}`, {
+          signal: abortController.current.signal,
+        });
 
-      setProducts(data);
-      setLoading(false);
-    } catch (error) {
-      if (error instanceof Error && error.name === "AbortError") {
+        const data = (await response.json()) as Product[];
+
+        setProducts(data);
+        setLoading(false);
+      } catch (error) {
+        if (error instanceof Error && error.name === "AbortError") {
+          return;
+        }
+
+        console.error(error);
+
         return;
       }
 
-      console.error(error);
-
-      return;
-    }
-
-    setLoading(false);
-  }, []);
+      setLoading(false);
+    },
+    []
+  );
 
   const handleKeyUp = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -55,16 +70,26 @@ export function Search() {
       }
 
       if (e.key === "Enter" || hasHit3Chars.current) {
-        performSearch(query);
+        performSearch(query, category);
       }
     },
-    [performSearch, query]
+    [performSearch, query, category]
+  );
+
+  const handleCategoryChange = useCallback(
+    (category: Category | undefined) => {
+      const newCategory = category?.slug ?? null;
+
+      setCategory(newCategory);
+      performSearch(query, newCategory);
+    },
+    [setCategory, performSearch, query]
   );
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Run on mount
   useEffect(() => {
     hasHit3Chars.current = query !== null && query.length > 2;
-    performSearch(query);
+    performSearch(query, category);
   }, []);
 
   return (
@@ -78,7 +103,11 @@ export function Search() {
           placeholder={t("inputPlaceholder")}
           type="text"
         />
-        <Button onClick={() => performSearch(query)}>
+        <CategorySelector
+          getCategoriesPromise={getCategoriesPromise}
+          onCategoryChange={handleCategoryChange}
+        />
+        <Button onClick={() => performSearch(query, category)}>
           {t("searchButton")}
         </Button>
       </div>

@@ -1,3 +1,4 @@
+import { getCategories } from "@repo/api/categories";
 import { Search } from "@repo/ui/components/search/search";
 import { routing } from "@repo/ui/i18n/routing";
 import { NuqsAdapter } from "@repo/ui/nuqs";
@@ -27,10 +28,12 @@ export default async function SearchPage({
 
   setRequestLocale(locale);
 
+  const getCategoriesPromise = getCategories();
+
   return (
     <Suspense>
       <NuqsAdapter>
-        <Search />
+        <Search getCategoriesPromise={getCategoriesPromise} />
       </NuqsAdapter>
     </Suspense>
   );

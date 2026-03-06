@@ -17,18 +17,34 @@ export interface Product {
 export async function getProducts({
   featured,
   query,
+  category,
   limit = 6,
 }: {
   featured?: boolean;
   query?: string | null;
   limit?: number;
+  category?: string | null;
 }): Promise<Product[]> {
   "use cache";
 
   cacheLife("default");
 
+  const queryParams = new URLSearchParams();
+  if (featured) {
+    queryParams.set("featured", "true");
+  }
+  if (query) {
+    queryParams.set("search", query);
+  }
+  if (category) {
+    queryParams.set("category", category);
+  }
+  if (limit) {
+    queryParams.set("limit", limit.toString());
+  }
+
   const products = await getData<Product[]>(
-    `/api/products?${featured ? "featured=true&" : ""}limit=${limit}${query ? `&search=${query}` : ""}`
+    `/api/products?${queryParams.toString()}`
   );
   return products;
 }
