@@ -12,13 +12,16 @@ import { Skeleton } from "../skeleton";
 function CategorySelectorContent({
   getCategoriesPromise,
   onCategoryChange,
+  defaultCategory,
 }: {
   getCategoriesPromise: Promise<Category[]>;
   onCategoryChange: (category: Category | undefined) => void;
+  defaultCategory: string | null;
 }) {
   const categories = use(getCategoriesPromise);
   return (
     <Select
+      defaultValue={defaultCategory ?? undefined}
       onValueChange={(value) =>
         onCategoryChange(categories.find((category) => category.slug === value))
       }
@@ -41,13 +44,16 @@ function CategorySelectorContent({
 export function CategorySelector({
   getCategoriesPromise,
   onCategoryChange,
+  defaultCategory,
 }: {
   getCategoriesPromise: Promise<Category[]>;
   onCategoryChange: (category: Category | undefined) => void;
+  defaultCategory: string | null;
 }) {
   return (
     <Suspense fallback={<Skeleton className="h-9 w-[200px]" />}>
       <CategorySelectorContent
+        defaultCategory={defaultCategory}
         getCategoriesPromise={getCategoriesPromise}
         onCategoryChange={onCategoryChange}
       />

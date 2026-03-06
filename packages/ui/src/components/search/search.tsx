@@ -104,6 +104,7 @@ export function Search({
           type="text"
         />
         <CategorySelector
+          defaultCategory={category}
           getCategoriesPromise={getCategoriesPromise}
           onCategoryChange={handleCategoryChange}
         />
