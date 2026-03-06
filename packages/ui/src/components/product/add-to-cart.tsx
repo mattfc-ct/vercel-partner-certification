@@ -13,7 +13,9 @@ export function AddToCart({ maxQuantity }: { maxQuantity: number }) {
         <Button
           className="text-2xl"
           onClick={() =>
-            setQuantity((quantity) => (quantity > 1 ? quantity - 1 : 1))
+            setQuantity((oldQuantity) =>
+              oldQuantity > 1 ? oldQuantity - 1 : 1
+            )
           }
           variant="link"
         >
@@ -21,17 +23,17 @@ export function AddToCart({ maxQuantity }: { maxQuantity: number }) {
         </Button>
         <Input
           className="w-full max-w-16"
-          defaultValue={quantity}
           max={maxQuantity}
           min={1}
           onChange={(e) => setQuantity(Number(e.target.value))}
           type="number"
+          value={quantity}
         />
         <Button
           className="text-2xl"
           onClick={() =>
-            setQuantity((quantity) =>
-              quantity < maxQuantity ? quantity + 1 : maxQuantity
+            setQuantity((oldQuantity) =>
+              oldQuantity < maxQuantity ? oldQuantity + 1 : maxQuantity
             )
           }
           variant="link"
