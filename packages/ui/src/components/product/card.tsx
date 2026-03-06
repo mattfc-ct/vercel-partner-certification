@@ -7,7 +7,7 @@ export function ProductCard({ product }: { product: Product }) {
   const format = useFormatter();
 
   return (
-    <Link href={`/products/${product.slug}`}>
+    <Link className="flex flex-col gap-4" href={`/products/${product.slug}`}>
       {product.images[0] && (
         <Image
           alt={product.name}

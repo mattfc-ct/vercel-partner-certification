@@ -3,8 +3,8 @@ import { Link } from "@repo/ui/i18n/navigation";
 import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 import { Button } from "../button";
-import { ProductCard } from "../product/card";
-import { Spinner } from "../spinner";
+import { ProductGrid } from "../product/grid";
+import { ProductGridSkeleton } from "../product/skeleton";
 
 async function FeaturedProductsContent() {
   const featuredProducts = await getProducts({ featured: true });
@@ -13,15 +13,7 @@ async function FeaturedProductsContent() {
     return;
   }
 
-  return (
-    <ul className="mt-6 grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
-      {featuredProducts.map((product) => (
-        <li className="hover:underline" key={product.id}>
-          <ProductCard product={product} />
-        </li>
-      ))}
-    </ul>
-  );
+  return <ProductGrid products={featuredProducts} />;
 }
 
 export async function FeaturedProducts() {
@@ -35,13 +27,7 @@ export async function FeaturedProducts() {
           <Link href="/search">{t("viewAll")}</Link>
         </Button>
       </div>
-      <Suspense
-        fallback={
-          <div className="flex justify-center">
-            <Spinner className="size-16" />
-          </div>
-        }
-      >
+      <Suspense fallback={<ProductGridSkeleton count={6} />}>
         <FeaturedProductsContent />
       </Suspense>
     </>

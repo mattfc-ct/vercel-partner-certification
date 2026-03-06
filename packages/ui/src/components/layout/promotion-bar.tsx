@@ -6,7 +6,7 @@ async function PromoBarCode({ code }: { code: string }) {
 
   return (
     <span>
-      {t("code")} <span className="font-bold">{code}</span>
+      &nbsp;{t("code")} <span className="font-bold">{code}</span>
     </span>
   );
 }

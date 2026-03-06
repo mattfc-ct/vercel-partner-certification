@@ -1,3 +1,4 @@
+import { cacheLife } from "next/cache";
 import { getData } from "./api";
 
 export interface Product {
@@ -22,6 +23,10 @@ export async function getProducts({
   query?: string | null;
   limit?: number;
 }): Promise<Product[]> {
+  "use cache";
+
+  cacheLife("default");
+
   const products = await getData<Product[]>(
     `/api/products?${featured ? "featured=true&" : ""}limit=${limit}${query ? `&search=${query}` : ""}`
   );
@@ -29,6 +34,10 @@ export async function getProducts({
 }
 
 export async function getProductBySlug(slug: string): Promise<Product> {
+  "use cache";
+
+  cacheLife("default");
+
   const product = await getData<Product>(`/api/products/${slug}`);
   return product;
 }

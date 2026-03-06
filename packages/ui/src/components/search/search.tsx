@@ -6,8 +6,8 @@ import { useQueryState } from "nuqs";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "../button";
 import { Input } from "../input";
-import { ProductCard } from "../product/card";
-import { Spinner } from "../spinner";
+import { ProductGrid } from "../product/grid";
+import { ProductGridSkeleton } from "../product/skeleton";
 
 export function Search() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -83,17 +83,9 @@ export function Search() {
         </Button>
       </div>
       {loading ? (
-        <div className="flex min-h-[70vh] items-center justify-center">
-          <Spinner className="size-16" />
-        </div>
+        <ProductGridSkeleton count={5} />
       ) : (
-        <ul className="mt-6 grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
-          {products.map((product) => (
-            <li className="hover:underline" key={product.id}>
-              <ProductCard product={product} />
-            </li>
-          ))}
-        </ul>
+        <ProductGrid products={products} />
       )}
       {products.length === 0 && !loading && (
         <div className="mt-6 text-center text-lg text-muted-foreground">

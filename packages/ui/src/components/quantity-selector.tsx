@@ -14,7 +14,7 @@ export function QuantitySelector({
   const t = useTranslations("QuantitySelector");
 
   return (
-    <div>
+    <>
       <Button
         aria-label={t("decreaseQuantity")}
         className="text-2xl"
@@ -46,6 +46,6 @@ export function QuantitySelector({
       >
         +
       </Button>
-    </div>
+    </>
   );
 }

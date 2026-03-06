@@ -1,3 +1,4 @@
+import { cacheLife } from "next/cache";
 import { getData } from "./api";
 
 export interface Promotion {
@@ -12,6 +13,10 @@ export interface Promotion {
 }
 
 export async function getActivePromotion(): Promise<Promotion | null> {
+  "use cache";
+
+  cacheLife("default");
+
   const promotion = await getData<Promotion>("/api/promotions");
 
   if (!promotion.active) {

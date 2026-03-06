@@ -1,5 +1,4 @@
 import { getProductBySlug } from "@repo/api/products";
-import { getStock } from "@repo/api/stock";
 import { ProductDetails } from "@repo/ui/components/product/details";
 import { Spinner } from "@repo/ui/components/spinner";
 import { routing } from "@repo/ui/i18n/routing";
@@ -14,6 +13,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+
   const product = await getProductBySlug(slug);
 
   return {
@@ -35,12 +35,9 @@ async function ProductPageContent({
 }) {
   const { slug } = await params;
 
-  const [product, stock] = await Promise.all([
-    getProductBySlug(slug),
-    getStock(slug),
-  ]);
+  const product = await getProductBySlug(slug);
 
-  return <ProductDetails product={product} stock={stock} />;
+  return <ProductDetails product={product} />;
 }
 
 export default async function ProductPage({
