@@ -2,7 +2,7 @@ import type { Product } from "@repo/api/products";
 import type { Stock } from "@repo/api/stock";
 import { formatPrice } from "@repo/ui/lib/utils";
 import Image from "next/image";
-import { AddToCart } from "./add-to-cart";
+import { AddToCart } from "../add-to-cart";
 
 export function ProductDetails({
   product,
@@ -40,7 +40,9 @@ export function ProductDetails({
         </div>
         <p className="mt-4 text-gray-500 text-sm">{product.description}</p>
         <hr className="my-6" />
-        {stock.inStock && <AddToCart maxQuantity={stock.stock} />}
+        {stock.inStock && (
+          <AddToCart maxQuantity={stock.stock} product={product} />
+        )}
       </div>
     </div>
   );
