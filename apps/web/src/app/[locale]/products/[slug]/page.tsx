@@ -16,6 +16,10 @@ export async function generateMetadata({
 
   const product = await getProductBySlug(slug);
 
+  if (!product) {
+    return notFound();
+  }
+
   return {
     title: product.name,
   };
@@ -23,7 +27,7 @@ export async function generateMetadata({
 
 export async function generateStaticParams() {
   return routing.locales.map((locale) => ({
-    slug: "test",
+    slug: "dummy",
     locale,
   }));
 }
@@ -36,6 +40,10 @@ async function ProductPageContent({
   const { slug } = await params;
 
   const product = await getProductBySlug(slug);
+
+  if (!product) {
+    return notFound();
+  }
 
   return <ProductDetails product={product} />;
 }

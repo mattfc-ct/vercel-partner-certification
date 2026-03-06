@@ -1,4 +1,5 @@
 import { getProductBySlug } from "@repo/api/products";
+import { notFound } from "next/navigation";
 import { ImageResponse } from "next/og";
 import { getTranslations } from "next-intl/server";
 
@@ -20,6 +21,10 @@ export default async function Image({
   const { slug } = await params;
 
   const product = await getProductBySlug(slug);
+
+  if (!product) {
+    return notFound();
+  }
 
   return new ImageResponse(
     <div

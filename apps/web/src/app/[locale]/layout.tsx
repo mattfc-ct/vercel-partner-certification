@@ -21,7 +21,7 @@ export async function generateMetadata() {
 
 export async function generateStaticParams() {
   return routing.locales.map((locale) => ({
-    slug: "test",
+    slug: "dummy",
     locale,
   }));
 }

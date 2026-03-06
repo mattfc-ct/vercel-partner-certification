@@ -33,10 +33,14 @@ export async function getProducts({
   return products;
 }
 
-export async function getProductBySlug(slug: string): Promise<Product> {
+export async function getProductBySlug(slug: string): Promise<Product | null> {
   "use cache";
 
   cacheLife("default");
+
+  if (slug === "dummy") {
+    return null;
+  }
 
   const product = await getData<Product>(`/api/products/${slug}`);
   return product;
