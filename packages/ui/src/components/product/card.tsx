@@ -1,9 +1,11 @@
 import type { Product } from "@repo/api/products";
-import { formatPrice } from "@repo/ui/lib/utils";
+import { Link } from "@repo/ui/i18n/navigation";
 import Image from "next/image";
-import Link from "next/link";
+import { useFormatter } from "next-intl";
 
 export function ProductCard({ product }: { product: Product }) {
+  const format = useFormatter();
+
   return (
     <Link href={`/products/${product.slug}`}>
       {product.images[0] && (
@@ -17,7 +19,10 @@ export function ProductCard({ product }: { product: Product }) {
       )}
       <h3 className="font-bold text-lg">{product.name}</h3>
       <p className="text-gray-500 text-sm">
-        {formatPrice(product.price, product.currency)}
+        {format.number(product.price, {
+          style: "currency",
+          currency: product.currency,
+        })}
       </p>
     </Link>
   );

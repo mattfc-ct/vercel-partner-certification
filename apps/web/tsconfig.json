@@ -36,7 +36,8 @@
     "next-env.d.ts",
     "next.config.js",
     ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts"
+    ".next/dev/types/**/*.ts",
+    "../../packages/ui/src/i18n/routing.ts"
   ],
   "exclude": ["node_modules"]
 }

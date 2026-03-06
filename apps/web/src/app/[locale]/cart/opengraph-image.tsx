@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { getTranslations } from "next-intl/server";
 
 // Image metadata
 export const size = {
@@ -8,7 +9,10 @@ export const size = {
 
 export const contentType = "image/png";
 
-export default function Image() {
+export default async function Image() {
+  const tSite = await getTranslations("Site");
+  const tCart = await getTranslations("CartPage");
+
   return new ImageResponse(
     <div
       style={{
@@ -21,7 +25,7 @@ export default function Image() {
         justifyContent: "center",
       }}
     >
-      Swag Store | Search
+      {tSite("title")} | {tCart("title")}
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import type { Product } from "@repo/api/products";
 import type { Stock } from "@repo/api/stock";
-import { formatPrice } from "@repo/ui/lib/utils";
 import Image from "next/image";
+import { useFormatter, useTranslations } from "next-intl";
 import { AddToCart } from "../add-to-cart";
 
 export function ProductDetails({
@@ -11,6 +11,9 @@ export function ProductDetails({
   product: Product;
   stock: Stock;
 }) {
+  const format = useFormatter();
+  const t = useTranslations("ProductPage");
+
   return (
     <div className="flex flex-col items-center gap-8 md:flex-row">
       <div className="md:w-1/3">
@@ -27,15 +30,18 @@ export function ProductDetails({
       <div className="md:w-2/3">
         <h1 className="font-bold text-2xl">{product.name}</h1>
         <p className="mt-2 text-gray-500 text-sm">
-          {formatPrice(product.price, product.currency)}
+          {format.number(product.price, {
+            style: "currency",
+            currency: product.currency,
+          })}
         </p>
         <div className="mt-4">
           {stock.inStock ? (
             <p className="text-green-500 text-sm">
-              In Stock - {stock.stock} remaining
+              {t("inStock", { stock: stock.stock })}
             </p>
           ) : (
-            <p className="text-red-500 text-sm">Out of Stock</p>
+            <p className="text-red-500 text-sm">{t("outOfStock")}</p>
           )}
         </div>
         <p className="mt-4 text-gray-500 text-sm">{product.description}</p>

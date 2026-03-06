@@ -1,0 +1,57 @@
+{
+  "AddToCart": {
+    "buttonText": "Add to Cart",
+    "itemAdded": "{name} added to cart"
+  },
+  "CartPage": {
+    "title": "Cart",
+    "remove": "Remove",
+    "empty": "Your cart is empty.",
+    "total": "Total:",
+    "quantityUpdated": "{name} quantity updated to {quantity}",
+    "quantityRemoved": "{name} removed from cart"
+  },
+  "FeaturedProducts": {
+    "title": "Featured Products",
+    "viewAll": "View All"
+  },
+  "HomePage": {
+    "title": "Wear the framework you ship with",
+    "description": "Premium swag for developers who build with Vercel. From tees to tech gear, represent the tools you love.",
+    "imageAlt": "Swag Store",
+    "cta": "Browse All Products"
+  },
+  "Header": {
+    "cartButton": "Cart",
+    "title": "Swag Store",
+    "home": "Home",
+    "search": "Search",
+    "code": "Code"
+  },
+  "Footer": {
+    "copyright": "Copyright © 2026 Swag Store. All rights reserved."
+  },
+  "ProductPage": {
+    "inStock": "In Stock - {stock} remaining",
+    "outOfStock": "Out of Stock"
+  },
+  "SearchPage": {
+    "title": "Search",
+    "inputPlaceholder": "Search",
+    "searchButton": "Search",
+    "noProductsFound": "No products found"
+  },
+  "QuantitySelector": {
+    "decreaseQuantity": "Decrease quantity",
+    "increaseQuantity": "Increase quantity"
+  },
+  "Spinner": {
+    "loading": "Loading"
+  },
+  "Site": {
+    "title": "Swag Store",
+    "metaTitle": "Swag Store | %s",
+    "defaultMetaTitle": "Swag Store | Home",
+    "metaDescription": "Swag Store where you can buy great swag"
+  }
+}

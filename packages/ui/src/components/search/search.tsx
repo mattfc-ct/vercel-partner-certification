@@ -1,6 +1,7 @@
 "use client";
 
 import type { Product } from "@repo/api/products";
+import { useTranslations } from "next-intl";
 import { useQueryState } from "nuqs";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "../button";
@@ -14,6 +15,7 @@ export function Search() {
   const hasHit3Chars = useRef(false);
   const [loading, setLoading] = useState(false);
   const abortController = useRef<AbortController | null>(null);
+  const t = useTranslations("SearchPage");
 
   const performSearch = useCallback(async (query: string | null) => {
     setLoading(true);
@@ -67,16 +69,18 @@ export function Search() {
 
   return (
     <div>
-      <h1 className="mb-6 font-bold text-4xl">Search</h1>
+      <h1 className="mb-6 font-bold text-4xl">{t("title")}</h1>
       <div className="flex items-center gap-2">
         <Input
           defaultValue={query ?? ""}
           onChange={(e) => setQuery(e.target.value)}
           onKeyUp={handleKeyUp}
-          placeholder="Search"
+          placeholder={t("inputPlaceholder")}
           type="text"
         />
-        <Button onClick={() => performSearch(query)}>Search</Button>
+        <Button onClick={() => performSearch(query)}>
+          {t("searchButton")}
+        </Button>
       </div>
       {loading ? (
         <div className="flex min-h-[70vh] items-center justify-center">
@@ -93,7 +97,7 @@ export function Search() {
       )}
       {products.length === 0 && !loading && (
         <div className="mt-6 text-center text-lg text-muted-foreground">
-          No products found
+          {t("noProductsFound")}
         </div>
       )}
     </div>
