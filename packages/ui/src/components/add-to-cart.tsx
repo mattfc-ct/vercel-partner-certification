@@ -2,6 +2,7 @@
 
 import type { Product } from "@repo/api/products";
 import { useCallback, useState } from "react";
+import { toast } from "sonner";
 import { useCart } from "../hooks/use-cart";
 import { Button } from "./button";
 import { QuantitySelector } from "./quantity-selector";
@@ -19,6 +20,8 @@ export function AddToCart({
 
   const handleAddToCart = useCallback(() => {
     addToCart(product, quantity);
+
+    toast.success(`${product.name} added to cart`);
   }, [addToCart, product, quantity]);
 
   return (

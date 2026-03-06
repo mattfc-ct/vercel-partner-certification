@@ -9,6 +9,7 @@ import { TriangleIcon } from "@repo/ui/icons/triangle";
 import Link from "next/link";
 import { Suspense } from "react";
 import { Spinner } from "../spinner";
+import { CartButton } from "./cart-button";
 
 export function Header() {
   return (
@@ -32,6 +33,7 @@ export function Header() {
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
+        <CartButton />
       </div>
       <Suspense
         fallback={

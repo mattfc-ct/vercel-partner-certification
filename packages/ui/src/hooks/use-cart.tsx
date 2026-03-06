@@ -18,6 +18,20 @@ export function useCart() {
   const addToCart = useCallback(
     (product: Product, quantity: number) => {
       updateCart((cart) => {
+        const existingItem = cart.items.find(
+          (item) => item.slug === product.slug
+        );
+        if (existingItem) {
+          return {
+            ...cart,
+            items: cart.items.map((item) =>
+              item.slug === product.slug
+                ? { ...item, quantity: item.quantity + quantity }
+                : item
+            ),
+          };
+        }
+
         return {
           ...cart,
           items: [

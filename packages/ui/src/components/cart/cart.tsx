@@ -6,6 +6,7 @@ import { formatPrice } from "@repo/ui/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback } from "react";
+import { toast } from "sonner";
 import { useIsClient } from "usehooks-ts";
 import { Button } from "../button";
 import { QuantitySelector } from "../quantity-selector";
@@ -22,13 +23,17 @@ function CartItemRow({ item }: { item: CartItem }) {
         typeof newQuantity === "function" ? newQuantity(quantity) : newQuantity;
 
       updateQuantity(item.slug, finalQuantity);
+
+      toast.success(`${item.name} quantity updated to ${finalQuantity}`);
     },
-    [updateQuantity, item.slug, quantity]
+    [updateQuantity, item.slug, quantity, item.name]
   );
 
   const handleRemoveFromCart = useCallback(() => {
     removeFromCart(item.slug);
-  }, [removeFromCart, item.slug]);
+
+    toast.success(`${item.name} removed from cart`);
+  }, [removeFromCart, item.slug, item.name]);
 
   return (
     <div className="border-b pb-8 lg:pb-0" key={item.slug}>
@@ -71,10 +76,40 @@ function CartItemRow({ item }: { item: CartItem }) {
   );
 }
 
+function CartEmpty() {
+  return (
+    <div className="text-center text-gray-500 text-lg">Your cart is empty.</div>
+  );
+}
+
+function CartItems({
+  items,
+  amount,
+  currency,
+}: {
+  items: CartItem[];
+  amount: number;
+  currency: string;
+}) {
+  return (
+    <>
+      {items.map((item) => (
+        <CartItemRow item={item} key={item.slug} />
+      ))}
+      <div className="flex justify-end py-8">
+        <div className="text-lg lg:w-[200px]">
+          <span className="font-bold">Total:</span>
+          {formatPrice(amount, currency)}
+        </div>
+      </div>
+    </>
+  );
+}
+
 export function CartContent() {
   const {
-    cart,
-    total: { amount, currency },
+    cart: { items },
+    total: { amount, currency, quantity },
   } = useCart();
 
   const isClient = useIsClient();
@@ -82,18 +117,14 @@ export function CartContent() {
   return (
     <div>
       <h1 className="font-bold text-4xl">Cart</h1>
-      {cart && isClient && (
-        <>
-          {cart?.items.map((item) => (
-            <CartItemRow item={item} key={item.slug} />
-          ))}
-          <div className="flex justify-end py-8">
-            <div className="text-lg lg:w-[200px]">
-              <span className="font-bold">Total:</span>
-              {formatPrice(amount, currency)}
-            </div>
-          </div>
-        </>
+      {isClient && (
+        <div className="mt-8">
+          {quantity ? (
+            <CartItems amount={amount} currency={currency} items={items} />
+          ) : (
+            <CartEmpty />
+          )}
+        </div>
       )}
     </div>
   );
