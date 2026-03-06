@@ -2,6 +2,7 @@
 
 import { useCart } from "@repo/ui/hooks/use-cart";
 import { Link } from "@repo/ui/i18n/navigation";
+import { ShoppingCartIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useIsClient } from "usehooks-ts";
 import { Badge } from "../badge";
@@ -19,7 +20,7 @@ export function CartButton() {
   return isClient && quantity ? (
     <Button asChild className="ml-auto" variant="link">
       <Link href="/cart">
-        {t("cartButton")}
+        <ShoppingCartIcon aria-label={t("cartButton")} className="size-6" />
         <Badge>{quantity}</Badge>
       </Link>
     </Button>
