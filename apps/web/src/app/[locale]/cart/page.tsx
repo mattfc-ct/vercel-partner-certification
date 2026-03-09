@@ -4,7 +4,17 @@ import { notFound } from "next/navigation";
 import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
-export async function generateMetadata() {
+type CartPageProps = PageProps<"/[locale]/cart">;
+
+export async function generateMetadata({ params }: CartPageProps) {
+  const { locale } = await params;
+
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
+
+  setRequestLocale(locale);
+
   const t = await getTranslations("CartPage");
 
   return {
@@ -12,11 +22,7 @@ export async function generateMetadata() {
   };
 }
 
-export default async function CartPage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
+export default async function CartPage({ params }: CartPageProps) {
   const { locale } = await params;
 
   if (!hasLocale(routing.locales, locale)) {

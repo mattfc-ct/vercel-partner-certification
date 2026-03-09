@@ -8,7 +8,9 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 
 const FEATURED_PRODUCTS_COUNT = 6;
 
-export default async function HomePage({ params }: PageProps<"/[locale]">) {
+type HomePageProps = PageProps<"/[locale]">;
+
+export default async function HomePage({ params }: HomePageProps) {
   const { locale } = await params;
 
   if (!hasLocale(routing.locales, locale)) {

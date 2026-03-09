@@ -7,7 +7,17 @@ import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
 
-export async function generateMetadata() {
+type SearchPageProps = PageProps<"/[locale]/search">;
+
+export async function generateMetadata({ params }: SearchPageProps) {
+  const { locale } = await params;
+
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
+
+  setRequestLocale(locale);
+
   const t = await getTranslations("SearchPage");
 
   return {
@@ -15,11 +25,7 @@ export async function generateMetadata() {
   };
 }
 
-export default async function SearchPage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
+export default async function SearchPage({ params }: SearchPageProps) {
   const { locale } = await params;
 
   if (!hasLocale(routing.locales, locale)) {

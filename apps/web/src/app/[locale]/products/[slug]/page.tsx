@@ -7,11 +7,13 @@ import { hasLocale } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+type ProductPageProps = PageProps<"/[locale]/products/[slug]">;
+
+interface ProductParams {
+  params: ProductPageProps["params"];
+}
+
+export async function generateMetadata({ params }: ProductPageProps) {
   const { slug } = await params;
 
   const product = await getProductBySlug(slug);
@@ -32,11 +34,7 @@ export async function generateStaticParams() {
   }));
 }
 
-async function ProductPageContent({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+async function ProductPageContent({ params }: ProductParams) {
   const { slug } = await params;
 
   const product = await getProductBySlug(slug);
@@ -48,11 +46,7 @@ async function ProductPageContent({
   return <ProductDetails product={product} />;
 }
 
-export default async function ProductPage({
-  params,
-}: {
-  params: Promise<{ slug: string; locale: string }>;
-}) {
+export default async function ProductPage({ params }: ProductPageProps) {
   const { locale } = await params;
 
   if (!hasLocale(routing.locales, locale)) {
