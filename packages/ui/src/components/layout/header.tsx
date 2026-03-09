@@ -5,7 +5,6 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "@repo/ui/components/navigation-menu";
-import { Link } from "@repo/ui/i18n/navigation";
 import { TriangleIcon } from "@repo/ui/icons/triangle";
 import { useTranslations } from "next-intl";
 import { Suspense } from "react";
@@ -27,14 +26,14 @@ export function Header() {
             <NavigationMenuItem>
               <NavigationMenuLink asChild>
                 <div>
-                  <Link href="/">{t("home")}</Link>
+                  <a href="/">{t("home")}</a>
                 </div>
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink asChild>
                 <div>
-                  <Link href="/search">{t("search")}</Link>
+                  <a href="/search">{t("search")}</a>
                 </div>
               </NavigationMenuLink>
             </NavigationMenuItem>
