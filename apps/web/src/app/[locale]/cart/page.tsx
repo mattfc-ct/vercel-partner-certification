@@ -1,4 +1,4 @@
-import { CartContent } from "@repo/ui/components/cart/cart";
+import { Cart } from "@repo/ui/components/cart/cart";
 import { routing } from "@repo/ui/i18n/routing";
 import { notFound } from "next/navigation";
 import { hasLocale } from "next-intl";
@@ -25,5 +25,6 @@ export default async function CartPage({
 
   setRequestLocale(locale);
 
-  return <CartContent />;
+  // We render the cart without server properties as it is dependent on browser data (localStorage)
+  return <Cart />;
 }

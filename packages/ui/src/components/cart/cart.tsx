@@ -12,13 +12,11 @@ import { Button } from "../button";
 import { QuantitySelector } from "../quantity-selector";
 
 function CartItemRow({ item }: { item: CartItem }) {
-  const { cart, updateQuantity, removeFromCart } = useCart();
+  const { updateQuantity, removeFromCart } = useCart();
   const format = useFormatter();
-
-  const quantity =
-    cart?.items.find((oldItem) => oldItem.slug === item.slug)?.quantity ?? 1;
-
   const t = useTranslations("CartPage");
+
+  const { quantity } = item;
 
   const handleSetQuantity = useCallback(
     (newQuantity: number | ((quantity: number) => number)) => {
@@ -41,7 +39,7 @@ function CartItemRow({ item }: { item: CartItem }) {
   }, [removeFromCart, item.slug, item.name, t]);
 
   return (
-    <div className="border-b pb-8 lg:pb-0" key={item.slug}>
+    <li className="border-b pb-8 lg:pb-0">
       <div className="flex flex-col items-center gap-4 lg:flex-row">
         <div className="lg:w-[200px]">
           {item.images[0] && (
@@ -69,6 +67,8 @@ function CartItemRow({ item }: { item: CartItem }) {
         </div>
         <div className="lg:w-[200px]">
           <QuantitySelector
+            // Max quantity cannot be determined as it is dependent on the product call. To avoid excessive time spent rendering
+            // the cart, we decided to not call the product endpoint here. So we default to 99.
             maxQuantity={99}
             quantity={quantity}
             setQuantity={handleSetQuantity}
@@ -84,7 +84,7 @@ function CartItemRow({ item }: { item: CartItem }) {
           })}
         </div>
       </div>
-    </div>
+    </li>
   );
 }
 
@@ -94,45 +94,41 @@ function CartEmpty() {
   return <div className="text-center text-gray-500 text-lg">{t("empty")}</div>;
 }
 
-function CartItems({
-  items,
-  amount,
-  currency,
-}: {
-  items: CartItem[];
-  amount: number;
-  currency: string;
-}) {
-  const t = useTranslations("CartPage");
-  const format = useFormatter();
-
+function CartItems({ items }: { items: CartItem[] }) {
   return (
-    <>
+    <ul>
       {items.map((item) => (
         <CartItemRow item={item} key={item.slug} />
       ))}
-      <div className="flex justify-end py-8">
-        <div className="text-lg lg:w-[200px]">
-          <span className="font-bold">{t("total")} </span>
-          {format.number(amount, {
-            style: "currency",
-            currency: currency ?? "USD",
-          })}
-        </div>
-      </div>
-    </>
+    </ul>
   );
 }
 
-export function CartContent() {
+function CartTotal({ amount, currency }: { amount: number; currency: string }) {
+  const format = useFormatter();
+  const t = useTranslations("CartPage");
+
+  return (
+    <div className="flex justify-end py-8">
+      <div className="text-lg lg:w-[200px]">
+        <span className="font-bold">{t("total")} </span>
+        {format.number(amount, {
+          style: "currency",
+          currency: currency ?? "USD",
+        })}
+      </div>
+    </div>
+  );
+}
+
+export function Cart() {
   const {
     cart: { items },
     total: { amount, currency, quantity },
   } = useCart();
+  const t = useTranslations("CartPage");
 
   const isClient = useIsClient();
-
-  const t = useTranslations("CartPage");
 
   return (
     <div>
@@ -140,7 +136,10 @@ export function CartContent() {
       {isClient && (
         <div className="mt-8">
           {quantity ? (
-            <CartItems amount={amount} currency={currency} items={items} />
+            <>
+              <CartItems items={items} />
+              <CartTotal amount={amount} currency={currency} />
+            </>
           ) : (
             <CartEmpty />
           )}
