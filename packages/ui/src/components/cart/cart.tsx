@@ -9,7 +9,7 @@ import { CartTotal } from "./total";
 
 export function Cart() {
   const {
-    cart: { items },
+    items,
     total: { amount, currency, quantity },
   } = useCart();
   const t = useTranslations("CartPage");

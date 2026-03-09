@@ -75,5 +75,11 @@ export function useCart() {
       }
     : { currency: "USD", amount: 0, quantity: 0 };
 
-  return { addToCart, cart, removeFromCart, total, updateQuantity };
+  return {
+    addToCart,
+    items: cart.items,
+    removeFromCart,
+    total,
+    updateQuantity,
+  };
 }
