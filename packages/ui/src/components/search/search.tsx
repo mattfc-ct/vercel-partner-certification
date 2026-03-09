@@ -46,7 +46,7 @@ export function Search({
   const [query, setQuery] = useQueryState("query");
   const [category, setCategory] = useQueryState("category");
   const hasHit3Chars = useRef(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const abortController = useRef<AbortController | null>(null);
   const t = useTranslations("SearchPage");
 
