@@ -7,17 +7,19 @@ import {
   NavigationMenuList,
 } from "@repo/ui/components/navigation-menu";
 import { TriangleIcon } from "@repo/ui/icons/triangle";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 import { Spinner } from "../spinner";
 import { CartButton } from "./cart-button";
 
-export function Header({
+export async function Header({
   getActivePromotionPromise,
+  locale,
 }: {
   getActivePromotionPromise: Promise<Promotion | null>;
+  locale: string;
 }) {
-  const t = useTranslations("Header");
+  const t = await getTranslations({ locale, namespace: "Header" });
 
   return (
     <header className="border-b">

@@ -48,11 +48,14 @@ export default async function RootLayout({
     <html lang={locale}>
       <body>
         <NextIntlClientProvider>
-          <Header getActivePromotionPromise={getActivePromotionPromise} />
+          <Header
+            getActivePromotionPromise={getActivePromotionPromise}
+            locale={locale}
+          />
           <main className="container mx-auto min-h-[calc(100vh-158px)] px-8 py-16">
             {children}
           </main>
-          <Footer />
+          <Footer locale={locale} />
           <Toaster />
         </NextIntlClientProvider>
       </body>
