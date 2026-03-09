@@ -1,8 +1,9 @@
 import type { Product } from "@repo/api/products";
 import { getStock, type Stock } from "@repo/api/stock";
 import Image from "next/image";
+import { notFound } from "next/navigation";
 import { useFormatter, useTranslations } from "next-intl";
-import { Suspense } from "react";
+import { Suspense, use } from "react";
 import { AddToCart } from "../add-to-cart";
 import { Skeleton } from "../skeleton";
 import { StockError } from "./stock-error";
@@ -54,8 +55,18 @@ function ProductStockSkeleton() {
   );
 }
 
-export function ProductDetails({ product }: { product: Product }) {
+export function ProductDetails({
+  getProductPromise,
+}: {
+  getProductPromise: Promise<Product | null>;
+}) {
   const format = useFormatter();
+
+  const product = use(getProductPromise);
+
+  if (!product) {
+    return notFound();
+  }
 
   return (
     <div className="flex flex-col items-center gap-8 md:flex-row">

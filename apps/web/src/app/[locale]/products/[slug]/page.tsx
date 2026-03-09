@@ -37,13 +37,9 @@ export async function generateStaticParams() {
 async function ProductPageContent({ params }: ProductParams) {
   const { slug } = await params;
 
-  const product = await getProductBySlug(slug);
+  const getProductPromise = getProductBySlug(slug);
 
-  if (!product) {
-    return notFound();
-  }
-
-  return <ProductDetails product={product} />;
+  return <ProductDetails getProductPromise={getProductPromise} />;
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {

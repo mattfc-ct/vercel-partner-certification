@@ -56,5 +56,10 @@
     "metaTitle": "Swag Store | %s",
     "defaultMetaTitle": "Swag Store | Home",
     "metaDescription": "Swag Store where you can buy great swag"
+  },
+  "ErrorPage": {
+    "title": "Something went wrong!",
+    "description": "An error occurred while loading the page",
+    "tryAgain": "Try again"
   }
 }
