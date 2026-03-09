@@ -1,4 +1,3 @@
-import type { Promotion } from "@repo/api/promotions";
 import { PromotionBar } from "@repo/ui/components/layout/promotion-bar";
 import {
   NavigationMenu,
@@ -12,13 +11,7 @@ import { Suspense } from "react";
 import { Spinner } from "../spinner";
 import { CartButton } from "./cart-button";
 
-export async function Header({
-  getActivePromotionPromise,
-  locale,
-}: {
-  getActivePromotionPromise: Promise<Promotion | null>;
-  locale: string;
-}) {
+export async function Header({ locale }: { locale: string }) {
   const t = await getTranslations({ locale, namespace: "Header" });
 
   return (
@@ -55,7 +48,7 @@ export async function Header({
           </div>
         }
       >
-        <PromotionBar getActivePromotionPromise={getActivePromotionPromise} />
+        <PromotionBar />
       </Suspense>
     </header>
   );
