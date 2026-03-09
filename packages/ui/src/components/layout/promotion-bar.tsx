@@ -1,4 +1,4 @@
-import { getActivePromotion } from "@repo/api/promotions";
+import { getActivePromotion, type Promotion } from "@repo/api/promotions";
 import { getTranslations } from "next-intl/server";
 
 async function PromoBarCode({ code }: { code: string }) {
@@ -12,10 +12,16 @@ async function PromoBarCode({ code }: { code: string }) {
 }
 
 export async function PromotionBar() {
-  const promotion = await getActivePromotion();
+  let promotion: Promotion | null = null;
+
+  try {
+    promotion = await getActivePromotion();
+  } catch (error) {
+    console.error("Error getting active promotion", error);
+  }
 
   if (!promotion) {
-    return;
+    return null;
   }
 
   return (
