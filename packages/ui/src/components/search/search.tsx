@@ -4,7 +4,7 @@ import type { Category } from "@repo/api/categories";
 import type { Product } from "@repo/api/products";
 import { useTranslations } from "next-intl";
 import { useQueryState } from "nuqs";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "../button";
 import { Input } from "../input";
 import { ProductGrid } from "../product/grid";
@@ -24,67 +24,61 @@ export function Search({
   const abortController = useRef<AbortController | null>(null);
   const t = useTranslations("SearchPage");
 
-  const performSearch = useCallback(
-    async (query: string | null, category: string | null) => {
-      setLoading(true);
+  const performSearch = async (
+    query: string | null,
+    category: string | null
+  ) => {
+    setLoading(true);
 
-      abortController.current?.abort();
-      abortController.current = new AbortController();
+    abortController.current?.abort();
+    abortController.current = new AbortController();
 
-      try {
-        const queryParams = new URLSearchParams();
-        if (query) {
-          queryParams.set("query", query);
-        }
-        if (category) {
-          queryParams.set("category", category);
-        }
+    try {
+      const queryParams = new URLSearchParams();
+      if (query) {
+        queryParams.set("query", query);
+      }
+      if (category) {
+        queryParams.set("category", category);
+      }
 
-        const response = await fetch(`/api/search?${queryParams.toString()}`, {
-          signal: abortController.current.signal,
-        });
+      const response = await fetch(`/api/search?${queryParams.toString()}`, {
+        signal: abortController.current.signal,
+      });
 
-        const data = (await response.json()) as Product[];
+      const data = (await response.json()) as Product[];
 
-        setProducts(data);
-        setLoading(false);
-      } catch (error) {
-        if (error instanceof Error && error.name === "AbortError") {
-          return;
-        }
-
-        console.error(error);
-
+      setProducts(data);
+      setLoading(false);
+    } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") {
         return;
       }
 
-      setLoading(false);
-    },
-    []
-  );
+      console.error(error);
 
-  const handleKeyUp = useCallback(
-    (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (!hasHit3Chars.current && query && query.length > 2) {
-        hasHit3Chars.current = true;
-      }
+      return;
+    }
 
-      if (e.key === "Enter" || hasHit3Chars.current) {
-        performSearch(query, category);
-      }
-    },
-    [performSearch, query, category]
-  );
+    setLoading(false);
+  };
 
-  const handleCategoryChange = useCallback(
-    (category: Category | undefined) => {
-      const newCategory = category?.slug ?? null;
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!hasHit3Chars.current && query && query.length > 2) {
+      hasHit3Chars.current = true;
+    }
 
-      setCategory(newCategory);
-      performSearch(query, newCategory);
-    },
-    [setCategory, performSearch, query]
-  );
+    if (e.key === "Enter" || hasHit3Chars.current) {
+      performSearch(query, category);
+    }
+  };
+
+  const handleCategoryChange = (category: Category | undefined) => {
+    const newCategory = category?.slug ?? null;
+
+    setCategory(newCategory);
+    performSearch(query, newCategory);
+  };
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Run on mount
   useEffect(() => {

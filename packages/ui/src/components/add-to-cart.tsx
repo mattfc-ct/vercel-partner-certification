@@ -2,7 +2,7 @@
 
 import type { Product } from "@repo/api/products";
 import { useTranslations } from "next-intl";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { useCart } from "../hooks/use-cart";
 import { Button } from "./button";
@@ -21,11 +21,11 @@ export function AddToCart({
 
   const t = useTranslations("AddToCart");
 
-  const handleAddToCart = useCallback(() => {
+  const handleAddToCart = () => {
     addToCart(product, quantity);
 
     toast.success(t("itemAdded", { name: product.name }));
-  }, [addToCart, product, quantity, t]);
+  };
 
   return (
     <div className="flex flex-col gap-6">

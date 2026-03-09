@@ -5,7 +5,6 @@ import { Link } from "@repo/ui/i18n/navigation";
 import type { CartItem } from "@repo/ui/lib/cart";
 import Image from "next/image";
 import { useFormatter, useTranslations } from "next-intl";
-import { useCallback } from "react";
 import { toast } from "sonner";
 import { useIsClient } from "usehooks-ts";
 import { Button } from "../button";
@@ -18,25 +17,24 @@ function CartItemRow({ item }: { item: CartItem }) {
 
   const { quantity } = item;
 
-  const handleSetQuantity = useCallback(
-    (newQuantity: number | ((quantity: number) => number)) => {
-      const finalQuantity =
-        typeof newQuantity === "function" ? newQuantity(quantity) : newQuantity;
+  const handleSetQuantity = (
+    newQuantity: number | ((quantity: number) => number)
+  ) => {
+    const finalQuantity =
+      typeof newQuantity === "function" ? newQuantity(quantity) : newQuantity;
 
-      updateQuantity(item.slug, finalQuantity);
+    updateQuantity(item.slug, finalQuantity);
 
-      toast.success(
-        t("quantityUpdated", { name: item.name, quantity: finalQuantity })
-      );
-    },
-    [updateQuantity, item.slug, quantity, item.name, t]
-  );
+    toast.success(
+      t("quantityUpdated", { name: item.name, quantity: finalQuantity })
+    );
+  };
 
-  const handleRemoveFromCart = useCallback(() => {
+  const handleRemoveFromCart = () => {
     removeFromCart(item.slug);
 
     toast.success(t("quantityRemoved", { name: item.name }));
-  }, [removeFromCart, item.slug, item.name, t]);
+  };
 
   return (
     <li className="border-b pb-8 lg:pb-0">
