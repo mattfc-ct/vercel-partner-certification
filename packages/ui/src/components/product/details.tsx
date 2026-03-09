@@ -1,59 +1,10 @@
-import { getProductBySlug, type Product } from "@repo/api/products";
-import { getStock, type Stock } from "@repo/api/stock";
+import { getProductBySlug } from "@repo/api/products";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { getFormatter, getTranslations } from "next-intl/server";
+import { getFormatter } from "next-intl/server";
 import { Suspense } from "react";
-import { AddToCart } from "../add-to-cart";
-import { Skeleton } from "../skeleton";
-import { StockError } from "./stock-error";
-
-async function ProductStock({ product }: { product: Product }) {
-  const t = await getTranslations("ProductPage");
-
-  let stock: Stock | undefined;
-
-  try {
-    stock = await getStock(product.slug);
-  } catch (error) {
-    console.error("Error getting stock", error);
-
-    return <StockError />;
-  }
-
-  return (
-    <>
-      <div className="mt-4">
-        {stock.inStock ? (
-          <p className="text-green-500 text-sm">
-            {t("inStock", { stock: stock.stock })}
-          </p>
-        ) : (
-          <p className="text-red-500 text-sm">{t("outOfStock")}</p>
-        )}
-      </div>
-      <hr className="my-6" />
-      {stock.inStock && (
-        <AddToCart maxQuantity={stock.stock} product={product} />
-      )}
-    </>
-  );
-}
-
-function ProductStockSkeleton() {
-  return (
-    <>
-      <div className="mt-4">
-        <Skeleton className="h-[20px] w-[150px]" />
-      </div>
-      <hr className="my-6" />
-      <div className="flex flex-col gap-6">
-        <Skeleton className="h-[36px] w-[200px]" />
-        <Skeleton className="h-[36px] w-[100px]" />
-      </div>
-    </>
-  );
-}
+import { ProductStock } from "./stock";
+import { ProductStockSkeleton } from "./stock-skeleton";
 
 export async function ProductDetails({ slug }: { slug: string }) {
   const format = await getFormatter();

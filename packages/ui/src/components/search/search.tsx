@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "../button";
 import { Input } from "../input";
 import { ProductGrid } from "../product/grid";
-import { ProductGridSkeleton } from "../product/skeleton";
+import { ProductGridSkeleton } from "../product/grid-skeleton";
 import { CategorySelector } from "./category-selector";
 
 const SEARCH_LIMIT = 5;

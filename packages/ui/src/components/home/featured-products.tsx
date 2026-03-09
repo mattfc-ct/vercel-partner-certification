@@ -3,7 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 import { Button } from "../button";
 import { ProductGrid } from "../product/grid";
-import { ProductGridSkeleton } from "../product/skeleton";
+import { ProductGridSkeleton } from "../product/grid-skeleton";
 
 const FEATURED_PRODUCTS_COUNT = 6;
 
