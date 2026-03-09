@@ -37,7 +37,8 @@
     "title": "Search",
     "inputPlaceholder": "Search",
     "searchButton": "Search",
-    "noProductsFound": "No products found"
+    "noProductsFound": "No products found",
+    "error": "An error occurred while searching for products"
   },
   "QuantitySelector": {
     "decreaseQuantity": "Decrease quantity",

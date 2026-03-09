@@ -11,12 +11,35 @@ import { ProductGrid } from "../product/grid";
 import { ProductGridSkeleton } from "../product/skeleton";
 import { CategorySelector } from "./category-selector";
 
+const SEARCH_LIMIT = 5;
+
+function SearchError() {
+  const t = useTranslations("SearchPage");
+
+  return (
+    <div className="mt-6 text-center text-lg text-muted-foreground">
+      {t("error")}
+    </div>
+  );
+}
+
+function SearchNoProducts() {
+  const t = useTranslations("SearchPage");
+
+  return (
+    <div className="mt-6 text-center text-lg text-muted-foreground">
+      {t("noProductsFound")}
+    </div>
+  );
+}
+
 export function Search({
   getCategoriesPromise,
 }: {
   getCategoriesPromise: Promise<Category[]>;
 }) {
   const [products, setProducts] = useState<Product[]>([]);
+  const [hasError, setHasError] = useState(false);
   const [query, setQuery] = useQueryState("query");
   const [category, setCategory] = useQueryState("category");
   const hasHit3Chars = useRef(false);
@@ -28,12 +51,16 @@ export function Search({
     query: string | null,
     category: string | null
   ) => {
-    setLoading(true);
+    const setLoadingTimeout = setTimeout(() => {
+      setLoading(true);
+    }, 150);
 
     abortController.current?.abort();
     abortController.current = new AbortController();
 
     try {
+      setHasError(false);
+
       const queryParams = new URLSearchParams();
       if (query) {
         queryParams.set("query", query);
@@ -41,12 +68,19 @@ export function Search({
       if (category) {
         queryParams.set("category", category);
       }
+      queryParams.set("limit", SEARCH_LIMIT.toString());
 
       const response = await fetch(`/api/search?${queryParams.toString()}`, {
         signal: abortController.current.signal,
       });
 
+      if (!response.ok) {
+        throw new Error(await response.text());
+      }
+
       const data = (await response.json()) as Product[];
+
+      clearTimeout(setLoadingTimeout);
 
       setProducts(data);
       setLoading(false);
@@ -54,6 +88,11 @@ export function Search({
       if (error instanceof Error && error.name === "AbortError") {
         return;
       }
+
+      clearTimeout(setLoadingTimeout);
+
+      setHasError(true);
+      setLoading(false);
 
       console.error(error);
 
@@ -106,15 +145,11 @@ export function Search({
           {t("searchButton")}
         </Button>
       </div>
-      {loading ? (
-        <ProductGridSkeleton count={5} />
-      ) : (
+      {loading && <ProductGridSkeleton count={5} />}
+      {hasError && <SearchError />}
+      {products.length === 0 && !loading && !hasError && <SearchNoProducts />}
+      {products.length > 0 && !loading && !hasError && (
         <ProductGrid products={products} />
-      )}
-      {products.length === 0 && !loading && (
-        <div className="mt-6 text-center text-lg text-muted-foreground">
-          {t("noProductsFound")}
-        </div>
       )}
     </div>
   );
