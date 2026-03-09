@@ -1,3 +1,4 @@
+import type { Promotion } from "@repo/api/promotions";
 import { PromotionBar } from "@repo/ui/components/layout/promotion-bar";
 import {
   NavigationMenu,
@@ -11,7 +12,11 @@ import { Suspense } from "react";
 import { Spinner } from "../spinner";
 import { CartButton } from "./cart-button";
 
-export function Header() {
+export function Header({
+  getActivePromotionPromise,
+}: {
+  getActivePromotionPromise: Promise<Promotion | null>;
+}) {
   const t = useTranslations("Header");
 
   return (
@@ -48,7 +53,7 @@ export function Header() {
           </div>
         }
       >
-        <PromotionBar />
+        <PromotionBar getActivePromotionPromise={getActivePromotionPromise} />
       </Suspense>
     </header>
   );

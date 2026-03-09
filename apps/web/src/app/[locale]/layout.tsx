@@ -1,4 +1,5 @@
 import "@repo/ui/styles/globals.css";
+import { getActivePromotion } from "@repo/api/promotions";
 import { Footer } from "@repo/ui/components/layout/footer";
 import { Header } from "@repo/ui/components/layout/header";
 import { Toaster } from "@repo/ui/components/sonner";
@@ -38,11 +39,16 @@ export default async function RootLayout({
 
   setRequestLocale(locale);
 
+  const getActivePromotionPromise = getActivePromotion().catch((error) => {
+    console.error("Error getting active promotion", error);
+    return null;
+  });
+
   return (
     <html lang={locale}>
       <body>
         <NextIntlClientProvider>
-          <Header />
+          <Header getActivePromotionPromise={getActivePromotionPromise} />
           <main className="container mx-auto min-h-[calc(100vh-158px)] px-8 py-16">
             {children}
           </main>

@@ -13,12 +13,15 @@ import { CategorySelector } from "./category-selector";
 
 const SEARCH_LIMIT = 5;
 
-function SearchError() {
+function SearchError({ retry }: { retry: () => void }) {
   const t = useTranslations("SearchPage");
 
   return (
     <div className="mt-6 text-center text-lg text-muted-foreground">
-      {t("error")}
+      <p>{t("error")}</p>
+      <Button className="mt-3" onClick={retry}>
+        {t("retry")}
+      </Button>
     </div>
   );
 }
@@ -146,7 +149,7 @@ export function Search({
         </Button>
       </div>
       {loading && <ProductGridSkeleton count={5} />}
-      {hasError && <SearchError />}
+      {hasError && <SearchError retry={() => performSearch(query, category)} />}
       {products.length === 0 && !loading && !hasError && <SearchNoProducts />}
       {products.length > 0 && !loading && !hasError && (
         <ProductGrid products={products} />

@@ -1,15 +1,24 @@
 import type { Product } from "@repo/api/products";
-import { getStock } from "@repo/api/stock";
+import { getStock, type Stock } from "@repo/api/stock";
 import Image from "next/image";
 import { useFormatter, useTranslations } from "next-intl";
 import { Suspense } from "react";
 import { AddToCart } from "../add-to-cart";
 import { Skeleton } from "../skeleton";
+import { StockError } from "./stock-error";
 
 async function ProductStock({ product }: { product: Product }) {
   const t = useTranslations("ProductPage");
 
-  const stock = await getStock(product.slug);
+  let stock: Stock | undefined;
+
+  try {
+    stock = await getStock(product.slug);
+  } catch (error) {
+    console.error("Error getting stock", error);
+
+    return <StockError />;
+  }
 
   return (
     <>

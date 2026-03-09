@@ -19,12 +19,15 @@ export default async function HomePage({ params }: HomePageProps) {
 
   setRequestLocale(locale);
 
+  const t = await getTranslations("HomePage");
+
   const getProductsPromise = getProducts({
     featured: true,
     limit: FEATURED_PRODUCTS_COUNT,
+  }).catch((error) => {
+    console.error("Error getting products", error);
+    return [];
   });
-
-  const t = await getTranslations("HomePage");
 
   return (
     <div className="flex flex-col gap-24">

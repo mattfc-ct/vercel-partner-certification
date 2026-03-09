@@ -1,4 +1,5 @@
 import type { Product } from "@repo/api/products";
+import { useTranslations } from "next-intl";
 import { Suspense, use } from "react";
 import { Button } from "../button";
 import { ProductGrid } from "../product/grid";
@@ -10,6 +11,15 @@ function FeaturedProductsContent({
   getProductsPromise: Promise<Product[]>;
 }) {
   const products = use(getProductsPromise);
+  const t = useTranslations("HomePage");
+
+  if (products.length === 0) {
+    return (
+      <div className="mt-6 text-center text-lg text-muted-foreground">
+        {t("noFeaturedProducts")}
+      </div>
+    );
+  }
 
   return <ProductGrid products={products} />;
 }
@@ -26,7 +36,7 @@ export function FeaturedProducts({
   count?: number;
 }) {
   return (
-    <>
+    <div>
       <div className="flex items-center justify-between">
         <h2 className="font-bold text-2xl">{title}</h2>
         <Button asChild variant="link">
@@ -36,6 +46,6 @@ export function FeaturedProducts({
       <Suspense fallback={<ProductGridSkeleton count={count} />}>
         <FeaturedProductsContent getProductsPromise={getProductsPromise} />
       </Suspense>
-    </>
+    </div>
   );
 }

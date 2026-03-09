@@ -17,7 +17,8 @@
     "imageAlt": "Swag Store",
     "heroCta": "Browse All Products",
     "featuredProductsTitle": "Featured Products",
-    "viewAll": "View All"
+    "viewAll": "View All",
+    "noFeaturedProducts": "No featured products found"
   },
   "Header": {
     "cartButton": "Cart",
@@ -31,14 +32,17 @@
   },
   "ProductPage": {
     "inStock": "In Stock - {stock} remaining",
-    "outOfStock": "Out of Stock"
+    "outOfStock": "Out of Stock",
+    "errorGettingStock": "An error occurred while getting the stock",
+    "refresh": "Refresh"
   },
   "SearchPage": {
     "title": "Search",
     "inputPlaceholder": "Search",
     "searchButton": "Search",
     "noProductsFound": "No products found",
-    "error": "An error occurred while searching for products"
+    "error": "An error occurred while searching for products",
+    "retry": "Retry"
   },
   "QuantitySelector": {
     "decreaseQuantity": "Decrease quantity",

@@ -34,7 +34,10 @@ export default async function SearchPage({ params }: SearchPageProps) {
 
   setRequestLocale(locale);
 
-  const getCategoriesPromise = getCategories();
+  const getCategoriesPromise = getCategories().catch((error) => {
+    console.error("Error getting categories", error);
+    return [];
+  });
 
   return (
     <Suspense>
