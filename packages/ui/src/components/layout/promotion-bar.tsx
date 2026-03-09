@@ -1,6 +1,5 @@
-import type { Promotion } from "@repo/api/promotions";
+import { getActivePromotion } from "@repo/api/promotions";
 import { getTranslations } from "next-intl/server";
-import { use } from "react";
 
 async function PromoBarCode({ code }: { code: string }) {
   const t = await getTranslations("Header");
@@ -12,12 +11,8 @@ async function PromoBarCode({ code }: { code: string }) {
   );
 }
 
-export function PromotionBar({
-  getActivePromotionPromise,
-}: {
-  getActivePromotionPromise: Promise<Promotion | null>;
-}) {
-  const promotion = use(getActivePromotionPromise);
+export async function PromotionBar() {
+  const promotion = await getActivePromotion();
 
   if (!promotion) {
     return;

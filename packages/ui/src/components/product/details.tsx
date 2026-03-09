@@ -1,15 +1,15 @@
-import type { Product } from "@repo/api/products";
+import { getProductBySlug, type Product } from "@repo/api/products";
 import { getStock, type Stock } from "@repo/api/stock";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { useFormatter, useTranslations } from "next-intl";
-import { Suspense, use } from "react";
+import { getFormatter, getTranslations } from "next-intl/server";
+import { Suspense } from "react";
 import { AddToCart } from "../add-to-cart";
 import { Skeleton } from "../skeleton";
 import { StockError } from "./stock-error";
 
 async function ProductStock({ product }: { product: Product }) {
-  const t = useTranslations("ProductPage");
+  const t = await getTranslations("ProductPage");
 
   let stock: Stock | undefined;
 
@@ -55,14 +55,10 @@ function ProductStockSkeleton() {
   );
 }
 
-export function ProductDetails({
-  getProductPromise,
-}: {
-  getProductPromise: Promise<Product | null>;
-}) {
-  const format = useFormatter();
+export async function ProductDetails({ slug }: { slug: string }) {
+  const format = await getFormatter();
 
-  const product = use(getProductPromise);
+  const product = await getProductBySlug(slug);
 
   if (!product) {
     return notFound();

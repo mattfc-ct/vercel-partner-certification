@@ -1,17 +1,19 @@
-import type { Product } from "@repo/api/products";
-import { useTranslations } from "next-intl";
-import { Suspense, use } from "react";
+import { getProducts } from "@repo/api/products";
+import { getTranslations } from "next-intl/server";
+import { Suspense } from "react";
 import { Button } from "../button";
 import { ProductGrid } from "../product/grid";
 import { ProductGridSkeleton } from "../product/skeleton";
 
-function FeaturedProductsContent({
-  getProductsPromise,
-}: {
-  getProductsPromise: Promise<Product[]>;
-}) {
-  const products = use(getProductsPromise);
-  const t = useTranslations("HomePage");
+const FEATURED_PRODUCTS_COUNT = 6;
+
+async function FeaturedProductsContent() {
+  const products = await getProducts({
+    featured: true,
+    limit: FEATURED_PRODUCTS_COUNT,
+  });
+
+  const t = await getTranslations("HomePage");
 
   if (products.length === 0) {
     return (
@@ -25,15 +27,11 @@ function FeaturedProductsContent({
 }
 
 export function FeaturedProducts({
-  getProductsPromise,
   title,
   viewAll,
-  count = 6,
 }: {
-  getProductsPromise: Promise<Product[]>;
   title: string;
   viewAll?: string | undefined;
-  count?: number;
 }) {
   return (
     <div>
@@ -43,8 +41,10 @@ export function FeaturedProducts({
           <a href="/search">{viewAll}</a>
         </Button>
       </div>
-      <Suspense fallback={<ProductGridSkeleton count={count} />}>
-        <FeaturedProductsContent getProductsPromise={getProductsPromise} />
+      <Suspense
+        fallback={<ProductGridSkeleton count={FEATURED_PRODUCTS_COUNT} />}
+      >
+        <FeaturedProductsContent />
       </Suspense>
     </div>
   );

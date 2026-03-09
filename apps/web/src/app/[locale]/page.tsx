@@ -1,12 +1,9 @@
-import { getProducts } from "@repo/api/products";
 import { FeaturedProducts } from "@repo/ui/components/home/featured-products";
 import { Hero } from "@repo/ui/components/home/hero";
 import { routing } from "@repo/ui/i18n/routing";
 import { notFound } from "next/navigation";
 import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-
-const FEATURED_PRODUCTS_COUNT = 6;
 
 type HomePageProps = PageProps<"/[locale]">;
 
@@ -21,14 +18,6 @@ export default async function HomePage({ params }: HomePageProps) {
 
   const t = await getTranslations("HomePage");
 
-  const getProductsPromise = getProducts({
-    featured: true,
-    limit: FEATURED_PRODUCTS_COUNT,
-  }).catch((error) => {
-    console.error("Error getting products", error);
-    return [];
-  });
-
   return (
     <div className="flex flex-col gap-24">
       <Hero
@@ -38,8 +27,6 @@ export default async function HomePage({ params }: HomePageProps) {
         title={t("title")}
       />
       <FeaturedProducts
-        count={FEATURED_PRODUCTS_COUNT}
-        getProductsPromise={getProductsPromise}
         title={t("featuredProductsTitle")}
         viewAll={t("viewAll")}
       />
