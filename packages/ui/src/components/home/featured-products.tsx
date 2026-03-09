@@ -1,34 +1,40 @@
-import { getProducts } from "@repo/api/products";
-import { Link } from "@repo/ui/i18n/navigation";
-import { getTranslations } from "next-intl/server";
-import { Suspense } from "react";
+import type { Product } from "@repo/api/products";
+import { Suspense, use } from "react";
 import { Button } from "../button";
 import { ProductGrid } from "../product/grid";
 import { ProductGridSkeleton } from "../product/skeleton";
 
-async function FeaturedProductsContent() {
-  const featuredProducts = await getProducts({ featured: true });
+function FeaturedProductsContent({
+  getProductsPromise,
+}: {
+  getProductsPromise: Promise<Product[]>;
+}) {
+  const products = use(getProductsPromise);
 
-  if (!featuredProducts.length) {
-    return;
-  }
-
-  return <ProductGrid products={featuredProducts} />;
+  return <ProductGrid products={products} />;
 }
 
-export async function FeaturedProducts() {
-  const t = await getTranslations("FeaturedProducts");
-
+export function FeaturedProducts({
+  getProductsPromise,
+  title,
+  viewAll,
+  count = 6,
+}: {
+  getProductsPromise: Promise<Product[]>;
+  title: string;
+  viewAll?: string | undefined;
+  count?: number;
+}) {
   return (
     <>
       <div className="flex items-center justify-between">
-        <h2 className="font-bold text-2xl">{t("title")}</h2>
+        <h2 className="font-bold text-2xl">{title}</h2>
         <Button asChild variant="link">
-          <Link href="/search">{t("viewAll")}</Link>
+          <a href="/search">{viewAll}</a>
         </Button>
       </div>
-      <Suspense fallback={<ProductGridSkeleton count={6} />}>
-        <FeaturedProductsContent />
+      <Suspense fallback={<ProductGridSkeleton count={count} />}>
+        <FeaturedProductsContent getProductsPromise={getProductsPromise} />
       </Suspense>
     </>
   );

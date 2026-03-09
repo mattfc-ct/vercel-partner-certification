@@ -11,15 +11,13 @@
     "quantityUpdated": "{name} quantity updated to {quantity}",
     "quantityRemoved": "{name} removed from cart"
   },
-  "FeaturedProducts": {
-    "title": "Featured Products",
-    "viewAll": "View All"
-  },
   "HomePage": {
     "title": "Wear the framework you ship with",
     "description": "Premium swag for developers who build with Vercel. From tees to tech gear, represent the tools you love.",
     "imageAlt": "Swag Store",
-    "cta": "Browse All Products"
+    "heroCta": "Browse All Products",
+    "featuredProductsTitle": "Featured Products",
+    "viewAll": "View All"
   },
   "Header": {
     "cartButton": "Cart",

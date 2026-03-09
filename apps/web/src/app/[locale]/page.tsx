@@ -1,18 +1,14 @@
-import { Button } from "@repo/ui/components/button";
+import { getProducts } from "@repo/api/products";
 import { FeaturedProducts } from "@repo/ui/components/home/featured-products";
 import { Hero } from "@repo/ui/components/home/hero";
-import { Link } from "@repo/ui/i18n/navigation";
 import { routing } from "@repo/ui/i18n/routing";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
-export default async function HomePage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
+const FEATURED_PRODUCTS_COUNT = 6;
+
+export default async function HomePage({ params }: PageProps<"/[locale]">) {
   const { locale } = await params;
 
   if (!hasLocale(routing.locales, locale)) {
@@ -21,28 +17,27 @@ export default async function HomePage({
 
   setRequestLocale(locale);
 
+  const getProductsPromise = getProducts({
+    featured: true,
+    limit: FEATURED_PRODUCTS_COUNT,
+  });
+
   const t = await getTranslations("HomePage");
 
   return (
     <div className="flex flex-col gap-24">
       <Hero
-        cta={
-          <Button asChild size="lg">
-            <Link href="/search">{t("cta")}</Link>
-          </Button>
-        }
+        cta={t("heroCta")}
         description={t("description")}
-        image={
-          <Image
-            alt={t("imageAlt")}
-            height={1000}
-            src="/images/hero.jpg"
-            width={1000}
-          />
-        }
+        image="/images/hero.jpg"
         title={t("title")}
       />
-      <FeaturedProducts />
+      <FeaturedProducts
+        count={FEATURED_PRODUCTS_COUNT}
+        getProductsPromise={getProductsPromise}
+        title={t("featuredProductsTitle")}
+        viewAll={t("viewAll")}
+      />
     </div>
   );
 }
