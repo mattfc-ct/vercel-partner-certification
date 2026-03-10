@@ -1,4 +1,5 @@
 import { getActivePromotion, type Promotion } from "@repo/api/promotions";
+import { connection } from "next/server";
 import { getTranslations } from "next-intl/server";
 
 async function PromoBarCode({ code }: { code: string }) {
@@ -12,6 +13,8 @@ async function PromoBarCode({ code }: { code: string }) {
 }
 
 export async function PromotionBar() {
+  await connection();
+
   let promotion: Promotion | null = null;
 
   try {
