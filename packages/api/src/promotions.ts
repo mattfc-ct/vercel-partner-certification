@@ -13,7 +13,7 @@ export interface Promotion {
 }
 
 export async function getActivePromotion(): Promise<Promotion | null> {
-  "use cache";
+  "use cache: remote";
 
   cacheLife("default");
 
