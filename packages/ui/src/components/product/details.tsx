@@ -24,6 +24,7 @@ export async function ProductDetails({ slug }: { slug: string }) {
             className="aspect-square w-full object-cover"
             fetchPriority="high"
             height={400}
+            loading="eager"
             preload
             src={product.images[0]}
             width={400}
