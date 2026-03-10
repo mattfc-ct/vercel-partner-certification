@@ -29,6 +29,7 @@ export function Hero({ title, description, image, cta }: HeroProps) {
             fetchPriority="high"
             height={1000}
             loading="eager"
+            placeholder="blur"
             preload
             src={image}
             width={1000}

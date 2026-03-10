@@ -25,6 +25,7 @@ export async function ProductDetails({ slug }: { slug: string }) {
             fetchPriority="high"
             height={400}
             loading="eager"
+            placeholder="blur"
             preload
             src={product.images[0]}
             width={400}
