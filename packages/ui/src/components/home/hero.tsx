@@ -23,7 +23,16 @@ export function Hero({ title, description, image, cta }: HeroProps) {
         )}
       </div>
       <div className="mt-4 md:mt-0 md:w-1/3">
-        {image && <Image alt={title} height={1000} src={image} width={1000} />}
+        {image && (
+          <Image
+            alt={title}
+            fetchPriority="high"
+            height={1000}
+            preload
+            src={image}
+            width={1000}
+          />
+        )}
       </div>
     </div>
   );
