@@ -25,7 +25,7 @@ export async function getProducts({
   limit?: number;
   category?: string | null;
 }): Promise<Product[]> {
-  "use cache";
+  "use cache: remote";
 
   cacheLife("default");
 
@@ -50,7 +50,7 @@ export async function getProducts({
 }
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {
-  "use cache";
+  "use cache: remote";
 
   cacheLife("default");
 

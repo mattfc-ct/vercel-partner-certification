@@ -8,7 +8,7 @@ export interface Category {
 }
 
 export async function getCategories(): Promise<Category[]> {
-  "use cache";
+  "use cache: remote";
 
   cacheLife("default");
 
