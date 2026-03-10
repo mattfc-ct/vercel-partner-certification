@@ -7,7 +7,8 @@
     "start": "turbo run start",
     "lint": "biome lint .",
     "format": "biome format --write .",
-    "check": "biome check ."
+    "check": "biome check .",
+    "analyze": "turbo run analyze"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.6",
