@@ -5,7 +5,8 @@
     "build": {
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**"],
-      "env": ["API_URL", "API_VERCEL_PROTECTION_BYPASS_TOKEN"]
+      "env": ["API_URL", "API_VERCEL_PROTECTION_BYPASS_TOKEN"],
+      "cache": false
     },
     "check-types": {
       "dependsOn": ["^check-types"]
