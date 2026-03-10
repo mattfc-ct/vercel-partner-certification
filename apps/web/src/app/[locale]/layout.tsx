@@ -11,12 +11,20 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("Site");
 
+  let metadataBase: URL | undefined;
+
+  if (process.env.VERCEL_ENV === "production") {
+    metadataBase = new URL(
+      `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    );
+  } else if (process.env.VERCEL_ENV === "preview") {
+    metadataBase = new URL(`https://${process.env.VERCEL_URL}`);
+  } else {
+    metadataBase = new URL("http://localhost:3000/");
+  }
+
   return {
-    metadataBase: new URL(
-      process.env.VERCEL_PROJECT_PRODUCTION_URL
-        ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-        : "http://localhost:3000/"
-    ),
+    metadataBase,
     title: {
       template: t("metaTitle"),
       default: t("defaultMetaTitle"),
