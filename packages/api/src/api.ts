@@ -1,3 +1,5 @@
+import "server-only";
+
 interface ApiResponse<T> {
   data: T;
   success: boolean;

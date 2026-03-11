@@ -1,3 +1,5 @@
+import "server-only";
+
 import { getData } from "./api";
 
 export interface Stock {
