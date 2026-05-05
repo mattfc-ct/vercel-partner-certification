@@ -8,7 +8,8 @@
     "lint": "biome lint .",
     "format": "biome format --write .",
     "check": "biome check .",
-    "analyze": "turbo run analyze"
+    "analyze": "turbo run analyze",
+    "test": "turbo run test --filter=ui"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.6",
